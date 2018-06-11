@@ -16,9 +16,14 @@ blake2-rfc = "0.2.18"
 rand = "0.4"
 byteorder = "1"
 clippy = { version = "0.0.190", optional = true }
+serde = { version = "1.0.66", optional = true }
 
 [features]
 unstable-features = ["expose-arith"]
 expose-arith = []
+serialization-serde = ["serde"]
 u128-support = []
 default = []
+
+[dev-dependencies]
+serde_json = "1.0.20"

@@ -7,6 +7,8 @@ mod ec;
 
 #[cfg(test)]
 mod tests;
+#[cfg(feature = "serialization-serde")]
+mod serde_impl;
 
 pub use self::fr::{Fr, FrRepr};
 pub use self::fq::{Fq, FqRepr};
