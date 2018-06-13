@@ -16,7 +16,7 @@
 extern crate blake2_rfc;
 extern crate byteorder;
 extern crate rand;
-#[cfg(feature = "serialization-serde")]
+#[cfg(feature = "serde")]
 extern crate serde;
 
 #[cfg(test)]

@@ -5,10 +5,10 @@ mod fq6;
 mod fq12;
 mod ec;
 
+#[cfg(feature = "serde")]
+mod serde_impl;
 #[cfg(test)]
 mod tests;
-#[cfg(feature = "serialization-serde")]
-mod serde_impl;
 
 pub use self::fr::{Fr, FrRepr};
 pub use self::fq::{Fq, FqRepr};
