@@ -19,7 +19,7 @@ macro_rules! curve_impl {
             y2
         }
 
-        #[derive(Copy, Clone, PartialEq, Eq, Debug)]
+        #[derive(Copy, Clone, PartialEq, Eq, Debug, Hash)]
         pub struct $affine {
             pub(crate) x: $basefield,
             pub(crate) y: $basefield,

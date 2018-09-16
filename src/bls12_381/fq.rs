@@ -535,7 +535,7 @@ pub const NEGATIVE_ONE: Fq = Fq(FqRepr([
     0x40ab3263eff0206,
 ]));
 
-#[derive(Copy, Clone, PartialEq, Eq, Default, Debug)]
+#[derive(Copy, Clone, PartialEq, Eq, Default, Debug, Hash)]
 pub struct FqRepr(pub [u64; 6]);
 
 impl ::rand::Rand for FqRepr {
@@ -724,7 +724,7 @@ impl PrimeFieldRepr for FqRepr {
     }
 }
 
-#[derive(Copy, Clone, PartialEq, Eq, Debug)]
+#[derive(Copy, Clone, PartialEq, Eq, Debug, Hash)]
 pub struct Fq(FqRepr);
 
 /// `Fq` elements are ordered lexicographically.
