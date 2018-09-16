@@ -1,4 +1,4 @@
-use rand::{Rand, Rng};
+use rand::{distributions, Rng};
 use Field;
 use super::fq2::Fq2;
 use super::fq::{FROBENIUS_COEFF_FQ6_C1, FROBENIUS_COEFF_FQ6_C2};
@@ -18,8 +18,8 @@ impl ::std::fmt::Display for Fq6 {
     }
 }
 
-impl Rand for Fq6 {
-    fn rand<R: Rng>(rng: &mut R) -> Self {
+impl distributions::Distribution<Fq6> for distributions::Standard {
+    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Fq6 {
         Fq6 {
             c0: rng.gen(),
             c1: rng.gen(),

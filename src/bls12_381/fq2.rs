@@ -1,6 +1,6 @@
 use blake2_rfc::blake2b::Blake2b;
 
-use rand::{Rand, Rng};
+use rand::{distributions, Rng};
 use {Field, SqrtField};
 use super::fq::{FROBENIUS_COEFF_FQ2_C1, Fq, NEGATIVE_ONE};
 
@@ -90,8 +90,8 @@ impl Fq2 {
     }
 }
 
-impl Rand for Fq2 {
-    fn rand<R: Rng>(rng: &mut R) -> Self {
+impl distributions::Distribution<Fq2> for distributions::Standard {
+    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Fq2 {
         Fq2 {
             c0: rng.gen(),
             c1: rng.gen(),

@@ -4,7 +4,7 @@ mod fq2;
 mod fq12;
 mod ec;
 
-use rand::{Rand, SeedableRng, XorShiftRng};
+use rand::{distributions, SeedableRng, XorShiftRng};
 
 use pairing::{Engine, CurveAffine, CurveProjective};
 use pairing::bls12_381::*;

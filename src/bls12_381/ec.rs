@@ -287,8 +287,8 @@ macro_rules! curve_impl {
             }
         }
 
-        impl Rand for $projective {
-            fn rand<R: Rng>(rng: &mut R) -> Self {
+        impl distributions::Distribution<$projective> for distributions::Standard {
+            fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> $projective {
                 loop {
                     let x = rng.gen();
                     let greatest = rng.gen();
@@ -773,7 +773,7 @@ macro_rules! curve_impl {
 
 pub mod g1 {
     use blake2_rfc::blake2b::Blake2b;
-    use rand::{Rand, Rng};
+    use rand::{distributions, Rng};
     use std::fmt;
     use super::g2::G2Affine;
     use super::super::{Bls12, Fq, Fq12, FqRepr, Fr, FrRepr};
@@ -1469,7 +1469,7 @@ pub mod g1 {
 
 pub mod g2 {
     use blake2_rfc::blake2b::Blake2b;
-    use rand::{Rand, Rng};
+    use rand::{distributions, Rng};
     use std::fmt;
     use super::super::{Bls12, Fq, Fq12, Fq2, FqRepr, Fr, FrRepr};
     use super::g1::G1Affine;

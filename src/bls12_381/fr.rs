@@ -57,9 +57,9 @@ const ROOT_OF_UNITY: FrRepr = FrRepr([
 #[derive(Copy, Clone, PartialEq, Eq, Default, Debug)]
 pub struct FrRepr(pub [u64; 4]);
 
-impl ::rand::Rand for FrRepr {
+impl ::rand::distributions::Distribution<FrRepr> for ::rand::distributions::Standard {
     #[inline(always)]
-    fn rand<R: ::rand::Rng>(rng: &mut R) -> Self {
+    fn sample<R: ::rand::Rng + ?Sized>(&self, rng: &mut R) -> FrRepr {
         FrRepr(rng.gen())
     }
 }
@@ -252,10 +252,10 @@ impl ::std::fmt::Display for Fr {
     }
 }
 
-impl ::rand::Rand for Fr {
-    fn rand<R: ::rand::Rng>(rng: &mut R) -> Self {
+impl ::rand::distributions::Distribution<Fr> for ::rand::distributions::Standard {
+    fn sample<R: ::rand::Rng + ?Sized>(&self, rng: &mut R) -> Fr {
         loop {
-            let mut tmp = Fr(FrRepr::rand(rng));
+            let mut tmp = Fr(rng.gen::<FrRepr>());
 
             // Mask away the unused bits at the beginning.
             tmp.0.as_mut()[3] &= 0xffffffffffffffff >> REPR_SHAVE_BITS;
@@ -643,7 +643,7 @@ impl SqrtField for Fr {
 }
 
 #[cfg(test)]
-use rand::{Rand, SeedableRng, XorShiftRng};
+use rand::{distributions, SeedableRng, XorShiftRng};
 
 #[test]
 fn test_fr_repr_ordering() {

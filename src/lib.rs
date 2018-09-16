@@ -125,8 +125,8 @@ pub trait CurveProjective:
     + Sync
     + fmt::Debug
     + fmt::Display
-    + rand::Rand
     + 'static
+    + rand::Rand
 {
     type Engine: Engine<Fr = Self::Scalar>;
     type Scalar: PrimeField + SqrtField;

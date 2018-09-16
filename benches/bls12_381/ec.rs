@@ -1,5 +1,5 @@
 mod g1 {
-    use rand::{Rand, SeedableRng, XorShiftRng};
+    use rand::{distributions, SeedableRng, XorShiftRng};
 
     use pairing::CurveProjective;
     use pairing::bls12_381::*;
@@ -57,7 +57,7 @@ mod g1 {
 }
 
 mod g2 {
-    use rand::{Rand, SeedableRng, XorShiftRng};
+    use rand::{distributions, SeedableRng, XorShiftRng};
 
     use pairing::CurveProjective;
     use pairing::bls12_381::*;

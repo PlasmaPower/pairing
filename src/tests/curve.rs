@@ -1,4 +1,4 @@
-use rand::{Rand, Rng, SeedableRng, XorShiftRng};
+use rand::{distributions, Rng, SeedableRng, XorShiftRng};
 
 use {CurveAffine, CurveProjective, EncodedPoint, Field};
 

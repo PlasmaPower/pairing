@@ -538,9 +538,9 @@ pub const NEGATIVE_ONE: Fq = Fq(FqRepr([
 #[derive(Copy, Clone, PartialEq, Eq, Default, Debug, Hash)]
 pub struct FqRepr(pub [u64; 6]);
 
-impl ::rand::Rand for FqRepr {
+impl ::rand::distributions::Distribution<FqRepr> for ::rand::distributions::Standard {
     #[inline(always)]
-    fn rand<R: ::rand::Rng>(rng: &mut R) -> Self {
+    fn sample<R: ::rand::Rng + ?Sized>(&self, rng: &mut R) -> FqRepr {
         FqRepr(rng.gen())
     }
 }
@@ -748,10 +748,10 @@ impl ::std::fmt::Display for Fq {
     }
 }
 
-impl ::rand::Rand for Fq {
-    fn rand<R: ::rand::Rng>(rng: &mut R) -> Self {
+impl ::rand::distributions::Distribution<Fq> for ::rand::distributions::Standard {
+    fn sample<R: ::rand::Rng + ?Sized>(&self, rng: &mut R) -> Fq {
         loop {
-            let mut tmp = Fq(FqRepr::rand(rng));
+            let mut tmp = Fq(rng.gen::<FqRepr>());
 
             // Mask away the unused bits at the beginning.
             tmp.0.as_mut()[5] &= 0xffffffffffffffff >> REPR_SHAVE_BITS;
@@ -1238,7 +1238,7 @@ impl SqrtField for Fq {
 }
 
 #[cfg(test)]
-use rand::{Rand, Rng, SeedableRng, XorShiftRng};
+use rand::{distributions, Rng, SeedableRng, XorShiftRng};
 
 #[test]
 fn test_hash() {

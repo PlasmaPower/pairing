@@ -1,4 +1,4 @@
-use rand::{Rand, Rng};
+use rand::{distributions, Rng};
 use Field;
 use super::fq6::Fq6;
 use super::fq2::Fq2;
@@ -18,8 +18,8 @@ impl ::std::fmt::Display for Fq12 {
     }
 }
 
-impl Rand for Fq12 {
-    fn rand<R: Rng>(rng: &mut R) -> Self {
+impl distributions::Distribution<Fq12> for distributions::Standard {
+    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Fq12 {
         Fq12 {
             c0: rng.gen(),
             c1: rng.gen(),

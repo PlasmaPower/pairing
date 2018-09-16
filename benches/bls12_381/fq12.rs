@@ -1,4 +1,4 @@
-use rand::{Rand, SeedableRng, XorShiftRng};
+use rand::{distributions, SeedableRng, XorShiftRng};
 
 use pairing::Field;
 use pairing::bls12_381::*;
