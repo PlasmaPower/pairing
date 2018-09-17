@@ -1,4 +1,4 @@
-use super::{Fq, FqRepr, Fr, FrRepr, G1Affine, G2Affine, G1, G2};
+use super::{Fq, FqRepr, Fr, FrRepr, G1Affine, G2Affine, G1, G2, G1Compressed, G2Compressed};
 use {CurveAffine, CurveProjective, EncodedPoint, PrimeField};
 
 use serde::de::Error as DeserializeError;
@@ -31,6 +31,18 @@ impl<'de> Deserialize<'de> for G1Affine {
     }
 }
 
+impl Serialize for G1Compressed {
+    fn serialize<S: Serializer>(&self, s: S) -> Result<S::Ok, S::Error> {
+        self.as_ref().serialize(s)
+    }
+}
+
+impl<'de> Deserialize<'de> for G1Compressed {
+    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        Ok(deserialize_compressed(d)?)
+    }
+}
+
 impl Serialize for G2 {
     fn serialize<S: Serializer>(&self, s: S) -> Result<S::Ok, S::Error> {
         self.into_affine().serialize(s)
@@ -55,19 +67,36 @@ impl<'de> Deserialize<'de> for G2Affine {
     }
 }
 
+impl Serialize for G2Compressed {
+    fn serialize<S: Serializer>(&self, s: S) -> Result<S::Ok, S::Error> {
+        self.as_ref().serialize(s)
+    }
+}
+
+impl<'de> Deserialize<'de> for G2Compressed {
+    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        Ok(deserialize_compressed(d)?)
+    }
+}
+
 /// Serializes a group element using its compressed representation.
 fn serialize_affine<S: Serializer, C: CurveAffine>(c: &C, s: S) -> Result<S::Ok, S::Error> {
     c.into_compressed().as_ref().serialize(s)
 }
 
-/// Deserializes the compressed representation of a group element.
-fn deserialize_affine<'de, D: Deserializer<'de>, C: CurveAffine>(d: D) -> Result<C, D::Error> {
+fn deserialize_compressed<'de, D: Deserializer<'de>, C: EncodedPoint>(d: D) -> Result<C, D::Error> {
     let bytes = <Vec<u8>>::deserialize(d)?;
-    if bytes.len() != C::Compressed::size() {
+    if bytes.len() != C::size() {
         return Err(D::Error::custom(ERR_LEN));
     }
-    let mut compressed = C::Compressed::empty();
+    let mut compressed = C::empty();
     compressed.as_mut().copy_from_slice(&bytes);
+    Ok(compressed)
+}
+
+/// Deserializes the compressed representation of a group element.
+fn deserialize_affine<'de, D: Deserializer<'de>, C: CurveAffine>(d: D) -> Result<C, D::Error> {
+    let mut compressed: C::Compressed = deserialize_compressed(d)?;
     let to_err = |_| D::Error::custom(ERR_CODE);
     Ok(compressed.into_affine().map_err(to_err)?)
 }
